@@ -1,0 +1,64 @@
+{
+  "city_rows": 791,
+  "district_rows": 10294,
+  "city_2024": 55.698633879781426,
+  "city_2025": 57.60520547945206,
+  "year_change_pp": 1.9065715996706345,
+  "best_month_2025": "2025-08-01",
+  "worst_month_2025": "2025-01-01",
+  "weekend_gap": -0.21937887711033,
+  "cluster_k": 2,
+  "silhouette": 0.4957928640754631,
+  "spec": [
+    [
+      1,
+      1,
+      1
+    ],
+    [
+      0,
+      1,
+      1,
+      7
+    ]
+  ],
+  "validation_start": "2025-09-11",
+  "test_start": "2025-10-09",
+  "test_end": "2025-12-31",
+  "coverage_95": 1.0,
+  "metrics": [
+    {
+      "model": "SARIMA",
+      "rmse": 3.3797005472381905,
+      "mape": 4.934893106750788,
+      "mae": 2.7527263576750456
+    },
+    {
+      "model": "周季节朴素法",
+      "rmse": 7.833741124137305,
+      "mape": 10.447905425543828,
+      "mae": 5.822619047619047
+    }
+  ],
+  "forecast_average": 56.28292596969205,
+  "forecast_origin": "2025-12-31",
+  "forecast_end": "2026-01-28",
+  "cluster_sensitivity": [
+    {
+      "omitted_feature": "mean",
+      "ari": 0.559322033898305
+    },
+    {
+      "omitted_feature": "volatility",
+      "ari": 0.4163265306122449
+    },
+    {
+      "omitted_feature": "weekend_gap",
+      "ari": 1.0
+    },
+    {
+      "omitted_feature": "seasonal_range",
+      "ari": 0.23927178153446033
+    }
+  ]
+}

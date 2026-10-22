@@ -1,0 +1,18 @@
+{
+  "data": "通过",
+  "forecast": "通过",
+  "figures": "10模板+6业务+1流程",
+  "paper": "通过",
+  "template_preserved_parts": [
+    "word/header1.xml",
+    "word/header2.xml",
+    "word/footer1.xml",
+    "word/footer2.xml",
+    "word/header3.xml",
+    "word/footer3.xml",
+    "word/header4.xml",
+    "word/footer4.xml",
+    "word/media/image1.png"
+  ],
+  "dashboard": "静态检查通过，浏览器联动另经实际测试"
+}

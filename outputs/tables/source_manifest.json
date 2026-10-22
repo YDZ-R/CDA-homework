@@ -1,0 +1,20 @@
+[
+  {
+    "file": "city_daily.xlsx",
+    "rows": 822,
+    "sha256": "ce5999aa42d5c6b17262c737dd125cedb84142920493fef543bfac5fbe5b10df",
+    "downloaded": "2026-10-22",
+    "source": "杭州文化和旅游数据在线开放平台",
+    "url": "https://data.wgly.hangzhou.gov.cn/home/#/dataPlatform/ssDatabase",
+    "method": "网页查询后点击下载原始数据；未使用爬虫"
+  },
+  {
+    "file": "district_daily.xlsx",
+    "rows": 10294,
+    "sha256": "8a7dbf481d537d57c1166d03245efe976bbda7d484840a27f5a8ed454436b062",
+    "downloaded": "2026-10-22",
+    "source": "杭州文化和旅游数据在线开放平台",
+    "url": "https://data.wgly.hangzhou.gov.cn/home/#/dataPlatform/ssDatabase",
+    "method": "网页查询后点击下载原始数据；未使用爬虫"
+  }
+]

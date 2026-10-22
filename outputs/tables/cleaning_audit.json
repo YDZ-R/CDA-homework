@@ -1,0 +1,36 @@
+{
+  "city": {
+    "raw_rows": 822,
+    "kept_rows": 791,
+    "excluded_before_start": 31,
+    "areas": 1,
+    "duplicate_rows": 0,
+    "missing_values": 0,
+    "missing_keys": [
+      {
+        "area": "杭州",
+        "date": "2023-11-18"
+      }
+    ],
+    "statistical_flags": 10
+  },
+  "district": {
+    "raw_rows": 10294,
+    "kept_rows": 10294,
+    "excluded_before_start": 0,
+    "areas": 13,
+    "duplicate_rows": 0,
+    "missing_values": 0,
+    "missing_keys": [
+      {
+        "area": "上城区",
+        "date": "2023-11-18"
+      },
+      {
+        "area": "临安区",
+        "date": "2023-11-18"
+      }
+    ],
+    "statistical_flags": 286
+  }
+}
