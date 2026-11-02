@@ -6,7 +6,8 @@
 
 ## 查看成果
 
-- 最新论文：`docs/杭州酒店入住率分析与预测_修订版.docx`（更新研究流程图，原文件打开期间另存）
+- 提交论文（Word）：[2024459985112_曹俊男_杭州酒店入住率分析与预测.docx](docs/2024459985112_曹俊男_杭州酒店入住率分析与预测.docx)
+- 提交论文（PDF）：[2024459985112_曹俊男_杭州酒店入住率分析与预测.pdf](docs/2024459985112_曹俊男_杭州酒店入住率分析与预测.pdf)
 - 大屏：`outputs/dashboard/index.html`，双击即可离线运行。
 - 全部图表：`outputs/figures`，PNG为220 dpi，同时提供SVG。
 - 计算结果及图表索引：`outputs/tables`。
@@ -28,7 +29,11 @@ python run_all.py
 
 Word自动生成不依赖Microsoft Word。PDF渲染与版式核验使用本机Word完成，不是`run_all.py`的跨平台依赖；已生成论文可直接阅读。浏览器演示截图是实际操作留档，复现脚本不会伪造新截图。
 
-原Word文件被占用时，生成器会另存为`_修订版.docx`；本次实际输出文件名记录在`outputs/tables/paper_metadata.json`。
+论文文件名按“学号_姓名_题目”统一，实际输出文件名记录在`outputs/tables/paper_metadata.json`。重新生成前请关闭该Word文件，避免文件占用导致写入失败。
+
+## 课程提交
+
+电子成果为上述Word或PDF论文及本公开仓库链接：https://github.com/YDZ-R/CDA-homework。仓库同时提供原始与清洗数据、Python代码、结果图表、离线大屏和实际演示截图。纸质版打印上述PDF或Word；课程要求截止时间为2026年11月5日11:00，如课程群另有调整，以最新通知为准。
 
 ## 数据来源与使用条件
 

@@ -39,7 +39,7 @@ for file in idx.file:
 with sqlite3.connect(CLEAN/'accommodation.sqlite') as conn:
     assert conn.execute('select count(*) from city_daily').fetchone()[0]==len(city)
 paper_meta=json.loads((TABLES/'paper_metadata.json').read_text(encoding='utf-8'))
-paper=ROOT/'docs'/paper_meta.get('paper_file','杭州酒店入住率分析与预测.docx')
+paper=ROOT/'docs'/paper_meta['paper_file']
 doc=Document(paper)
 text='\n'.join(p.text for p in doc.paragraphs)+'\n'+'\n'.join(c.text for t in doc.tables for row in t.rows for c in row.cells)
 assert len(re.findall('[\u4e00-\u9fff]',text))>3000

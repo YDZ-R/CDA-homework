@@ -321,12 +321,11 @@ doc.core_properties.subject='商业数据分析期末课程项目'
 doc.core_properties.keywords='酒店入住率；趋势对比；区县聚类；时间序列预测；Python可视化'
 doc.settings.element.append(OxmlElement('w:updateFields'))
 doc.settings.element[-1].set(qn('w:val'),'true')
-target=ROOT/'docs/杭州酒店入住率分析与预测.docx'
+target=ROOT/'docs/2024459985112_曹俊男_杭州酒店入住率分析与预测.docx'
 try:
     doc.save(target)
-except PermissionError:
-    target=ROOT/'docs/杭州酒店入住率分析与预测_修订版.docx'
-    doc.save(target)
+except PermissionError as exc:
+    raise PermissionError(f'请关闭已打开的论文后重新运行：{target}') from exc
 # Restore untouched package parts byte-for-byte, including their XML declarations.
 with zipfile.ZipFile(template) as source,zipfile.ZipFile(target) as built:
     keep={n:source.read(n) for n in source.namelist() if n.startswith(('word/header','word/footer','word/media/'))}
