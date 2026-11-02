@@ -6,7 +6,7 @@
 
 ## 查看成果
 
-- 论文：`docs/杭州酒店入住率分析与预测.docx`
+- 最新论文：`docs/杭州酒店入住率分析与预测_修订版.docx`（更新研究流程图，原文件打开期间另存）
 - 大屏：`outputs/dashboard/index.html`，双击即可离线运行。
 - 全部图表：`outputs/figures`，PNG为220 dpi，同时提供SVG。
 - 计算结果及图表索引：`outputs/tables`。
@@ -26,6 +26,8 @@ python run_all.py
 整个流程读取已经归档的原始文件，不发起网络抓取。运行后会重建清洗表、结果表、全部图表、大屏和Word论文，并执行独立检查。Pyecharts使用已归档的ECharts资源，断网也可查看大屏。默认使用Windows微软雅黑或黑体；其他系统需安装兼容中文字体，避免缺字。
 
 Word自动生成不依赖Microsoft Word。PDF渲染与版式核验使用本机Word完成，不是`run_all.py`的跨平台依赖；已生成论文可直接阅读。浏览器演示截图是实际操作留档，复现脚本不会伪造新截图。
+
+原Word文件被占用时，生成器会另存为`_修订版.docx`；本次实际输出文件名记录在`outputs/tables/paper_metadata.json`。
 
 ## 数据来源与使用条件
 

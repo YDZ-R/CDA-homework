@@ -6,7 +6,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-from matplotlib.patches import Wedge, Circle, FancyBboxPatch
+from matplotlib.patches import Wedge, Circle, FancyBboxPatch, FancyArrowPatch
 from matplotlib.colors import LinearSegmentedColormap
 from common import FIGURES, TABLES, COLORS, BG, INK, MUTED, city_data, district_data
 
@@ -110,14 +110,55 @@ ax.set(ylabel='入住率（%）');legend(ax,loc='upper left',ncol=3,fontsize=9)
 ax.xaxis.set_major_locator(mdates.MonthLocator());ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
 save(fig,16,'未来28日预测区间','业务模型','SARIMA')
 
-fig=plt.figure(figsize=(11,3.3),facecolor='white');ax=fig.add_axes([0,0,1,1]);ax.set_axis_off()
-stages=[('数据整理','日期对齐\n缺失与异常检查'),('特征提取','时间特征\n区县画像'),('模型分析','趋势对比  区县聚类\n回测与区间预测'),('经营应用','交互可视化\n经营建议')]
-for i,(title,desc) in enumerate(stages):
-    x0=.05+i*.24
-    ax.add_patch(FancyBboxPatch((x0,.22),.21,.56,boxstyle='round,pad=.012,rounding_size=.018',facecolor='#E6F1F1',edgecolor=COLORS[0],lw=1))
-    ax.text(x0+.105,.64,title,ha='center',fontsize=15,weight='bold',color=COLORS[0])
-    ax.text(x0+.105,.42,desc,ha='center',va='center',fontsize=11,color=INK,linespacing=1.8)
-    if i<3:ax.annotate('',xy=(x0+.235,.52),xytext=(x0+.215,.52),arrowprops=dict(arrowstyle='->',color=COLORS[0],lw=2))
+fig=plt.figure(figsize=(10,6.2),facecolor='white')
+ax=fig.add_axes([0,0,1,1],xlim=(0,100),ylim=(0,62));ax.set_axis_off()
+ax.add_patch(FancyBboxPatch((.7,.7),98.6,60.6,boxstyle='round,pad=0,rounding_size=1.2',
+                            facecolor='#FAFBFD',edgecolor='#CED6DF',lw=.8))
+blue=('#328BD0','#EDF5FD');pink=('#D9568C','#FDEEF4')
+green=('#359D71','#EEF8F1');purple=('#9360C4','#F5EFFB');orange=('#D89040','#FFF7E9')
+
+def group_box(x,y,w,h,title,palette):
+    color,fill=palette
+    ax.add_patch(FancyBboxPatch((x,y),w,h,boxstyle='round,pad=0,rounding_size=.9',
+                 facecolor=fill,edgecolor=color,lw=1,linestyle=(0,(5,3))))
+    dark={'#328BD0':'#236A9C','#D9568C':'#AA3668','#359D71':'#24704F','#9360C4':'#6D4095','#D89040':'#9A5D24'}
+    ax.text(x+1.4,y+h-2.0,title,color=dark[color],fontsize=13,weight='bold',style='italic',va='center')
+
+def node(x,y,w,h,label,color,fill='white',size=12.5):
+    assert 0<x<x+w<100 and 0<y<y+h<62
+    ax.add_patch(FancyBboxPatch((x,y),w,h,boxstyle='round,pad=0,rounding_size=.45',
+                 facecolor=fill,edgecolor=color,lw=.85))
+    dark={'#328BD0':'#236A9C','#D9568C':'#AA3668','#359D71':'#24704F','#9360C4':'#6D4095','#D89040':'#9A5D24'}
+    ax.text(x+w/2,y+h/2,label,ha='center',va='center',fontsize=size,color=dark[color])
+
+def arrow(start,end):
+    ax.add_patch(FancyArrowPatch(start,end,arrowstyle='-|>',mutation_scale=11,
+                               lw=1.05,color='#687A87',shrinkA=2,shrinkB=2))
+
+group_box(2.2,49,95.6,10.8,'阶段一  数据治理',blue)
+top=[(5,18,'日期统一'),(27.5,23,'缺日标记与异常检查'),(55,17,'特征构建'),(76.5,18.3,'分析数据表')]
+for x,w,label in top:node(x,51.2,w,3.9,label,blue[0])
+for (x,w,_),(nx,_,_) in zip(top,top[1:]):arrow((x+w,53.15),(nx,53.15))
+
+columns=[(2.2,pink,'阶段二  时间变化',['月度同比与环比','星期均值对比','月度与周内需求节奏']),
+         (34.8,green,'阶段三  区县分群',['区县四维特征','标准化与K-Means','轮廓系数及敏感性','区县需求画像']),
+         (67.4,purple,'阶段四  入住率预测',['训练与验证划分','SARIMA与季节朴素法','三轮28日滚动回测','点预测及95%区间'])]
+for x,palette,title,labels in columns:
+    group_box(x,18.9,30.4,26.5,title,palette)
+    center=x+15.2
+    arrow((center,49),(center,45.5))
+    # All three models use the cleaned observations; clustering is not a predictor input.
+    ys=[37.6,29.1,20.6] if len(labels)==3 else [37.6,31.8,26.0,20.2]
+    for j,(y,label) in enumerate(zip(ys,labels)):
+        node(x+2.0,y,26.4,4.1,label,palette[0],palette[1] if j==len(labels)-1 else 'white')
+        if j<len(labels)-1:arrow((center,y),(center,ys[j+1]+4.1))
+    arrow((center,18.9),(center,15.7))
+
+group_box(2.2,2.1,95.6,13.5,'阶段五  经营应用',orange)
+for x,label in [(4.2,'分时排班'),(36.8,'区域资源安排'),(69.4,'预测偏离复核')]:
+    node(x,8.5,26.4,3.3,label,orange[0])
+    arrow((x+13.2,8.5),(x+13.2,6.4))
+node(4.2,3.1,91.6,3.3,'经营建议与交互式可视化看板',orange[0],orange[1],size=13)
 save(fig,17,'研究技术路线','研究流程')
 pd.DataFrame(index).to_csv(TABLES/'figure_index.csv',index=False,encoding='utf-8-sig')
 print('图表已生成：17张PNG与对应SVG，分辨率220 dpi。')
