@@ -12,6 +12,7 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.enum.table import WD_TABLE_ALIGNMENT, WD_CELL_VERTICAL_ALIGNMENT
+from docx.enum.table import WD_ROW_HEIGHT_RULE
 from docx.enum.style import WD_STYLE_TYPE
 from common import ROOT, TABLES, FIGURES
 
@@ -41,12 +42,35 @@ body.remove(college)
 fields={3:('题　　目：','杭州酒店入住率分析与预测'),4:('学　　院：','数据科学学院'),
         5:('专业班级：','大数据241'),6:('学　　号：','2024459985112'),
         7:('姓　　名：','曹俊男'),8:('完成日期：','2026年11月2日')}
-for i,(label,value) in fields.items():
-    p=original[i]
-    for r in p.runs:r.text=''
-    p.add_run(label)
-    r=p.add_run(value+'　'*(max(0,20-len(value))));r.underline=True
-    for r in p.runs:r.font.name='楷体';r.font.size=Pt(14);r._element.get_or_add_rPr().rFonts.set(qn('w:eastAsia'),'楷体')
+cover=doc.add_table(rows=6,cols=2)
+cover.alignment=WD_TABLE_ALIGNMENT.CENTER;cover.autofit=False
+for col,width in zip(cover.columns,[2.7,10.6]):col.width=Cm(width)
+for row,(label,value) in zip(cover.rows,fields.values()):
+    row.height=Cm(.90);row.height_rule=WD_ROW_HEIGHT_RULE.EXACTLY
+    for ci,(cell,text) in enumerate(zip(row.cells,[label,value])):
+        cell.width=Cm([2.7,10.6][ci]);cell.vertical_alignment=WD_CELL_VERTICAL_ALIGNMENT.BOTTOM
+        p=cell.paragraphs[0]
+        p.alignment=WD_ALIGN_PARAGRAPH.LEFT if ci==0 else WD_ALIGN_PARAGRAPH.CENTER
+        p.paragraph_format.first_line_indent=Pt(0);p.paragraph_format.left_indent=Pt(0);p.paragraph_format.right_indent=Pt(0)
+        p.paragraph_format.space_before=Pt(0);p.paragraph_format.space_after=Pt(0);p.paragraph_format.line_spacing=Pt(18)
+        snap=OxmlElement('w:snapToGrid');snap.set(qn('w:val'),'0');p._p.get_or_add_pPr().append(snap)
+        p._p.get_or_add_pPr().find(qn('w:ind')).set(qn('w:firstLineChars'),'0')
+        r=p.add_run(text);r.font.name='楷体';r.font.size=Pt(14)
+        r._element.get_or_add_rPr().rFonts.set(qn('w:eastAsia'),'楷体')
+        tcPr=cell._tc.get_or_add_tcPr();borders=OxmlElement('w:tcBorders')
+        for edge in ['top','bottom','left','right']:
+            e=OxmlElement('w:'+edge);e.set(qn('w:val'),'single' if ci==1 and edge=='bottom' else 'nil')
+            e.set(qn('w:sz'),'6');e.set(qn('w:color'),'000000');borders.append(e)
+        tcPr.append(borders)
+        margins=OxmlElement('w:tcMar')
+        for edge in ['top','bottom','left','right']:
+            e=OxmlElement('w:'+edge);e.set(qn('w:w'),'55' if edge=='bottom' else '0');e.set(qn('w:type'),'dxa');margins.append(e)
+        tcPr.append(margins)
+original[3]._p.addprevious(cover._tbl)
+spacer=OxmlElement('w:p');spacerPr=OxmlElement('w:pPr');spacing=OxmlElement('w:spacing')
+spacing.set(qn('w:line'),'60');spacing.set(qn('w:lineRule'),'exact');spacing.set(qn('w:before'),'0');spacing.set(qn('w:after'),'0')
+spacerPr.append(spacing);spacer.append(spacerPr);cover._tbl.addnext(spacer)
+for i in fields:body.remove(original[i]._p)
 
 def font(run,size=12,bold=False,name='宋体'):
     run.font.name=name;run.font.size=Pt(size);run.font.bold=bold;run.font.color.rgb=RGBColor(0,0,0)

@@ -40,7 +40,7 @@ with sqlite3.connect(CLEAN/'accommodation.sqlite') as conn:
     assert conn.execute('select count(*) from city_daily').fetchone()[0]==len(city)
 paper=ROOT/'docs/杭州酒店入住率分析与预测.docx'
 doc=Document(paper)
-text='\n'.join(p.text for p in doc.paragraphs)
+text='\n'.join(p.text for p in doc.paragraphs)+'\n'+'\n'.join(c.text for t in doc.tables for row in t.rows for c in row.cells)
 assert len(re.findall('[\u4e00-\u9fff]',text))>3000
 assert '曹俊男' in text and '2024459985112' in text
 assert len(doc.sections)==3 and '关键词：酒店入住率；' in text
@@ -49,8 +49,12 @@ assert len(doc.inline_shapes)>=19 # retained university logo plus 18 authored pi
 abstract=next(p.text.removeprefix('摘要：') for p in doc.paragraphs if p.text.startswith('摘要：'))
 assert 200<=len(abstract)<=300
 # The cover scoring form is retained; only the three authored data tables use three rules.
-assert len(doc.tables)==4
-for table in doc.tables[1:]:
+assert len(doc.tables)==5
+cover=doc.tables[0]
+assert len(cover.rows)==6
+assert all(row.cells[1].width==cover.rows[0].cells[1].width for row in cover.rows)
+assert all(row.cells[1].paragraphs[0].alignment==1 for row in cover.rows)
+for table in doc.tables[2:]:
     for ri,row in enumerate(table.rows):
         for cell in row.cells:
             borders=cell._tc.get_or_add_tcPr().find(qn('w:tcBorders'))
