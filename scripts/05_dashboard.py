@@ -50,7 +50,7 @@ table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;p
 .table-head{display:flex;justify-content:space-between;align-items:center;gap:20px}.notice{padding:13px 0;font-size:12px;color:var(--muted)}.empty{display:none;background:#fff3ec;color:#714a35;padding:14px;margin-top:12px;border-radius:6px}footer{margin-top:20px;padding-top:15px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
 @media(max-width:850px){main{padding:20px 16px}header{display:block}.source{text-align:left;margin-top:10px}.grid{grid-template-columns:1fr}.wide{grid-column:auto}.kpis{grid-template-columns:repeat(2,1fr);gap:16px}.kpi:nth-child(2){border:0}h1{font-size:25px}.filters{gap:10px}.chart{height:290px}.panel{padding:16px 12px 6px}.preset{width:100%}}
 </style></head><body><main>
-<header><div><h1>杭州酒店入住率分析看板</h1><p>观察全市变化，比较区县差异，核对历史预测。</p></div><div class="source">数据：杭州文化和旅游数据在线开放平台<br>观察期 2023-11-01 至 2025-12-31 · 下载日期 2026-10-22</div></header>
+<header><div><h1>杭州酒店入住率分析看板</h1></div><div class="source">2023-11-01 至 2025-12-31</div></header>
 <section class="filters" aria-label="数据筛选">
 <label>开始日期<input id="start" type="date" min="2023-11-01" max="2025-12-31" value="2024-01-01"></label>
 <label>结束日期<input id="end" type="date" min="2023-11-01" max="2025-12-31" value="2025-12-31"></label>
@@ -59,15 +59,14 @@ table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;p
 </section><div id="error" class="empty" role="status"></div>
 <section class="kpis" aria-label="关键指标"><div class="kpi"><label>选定范围日均入住率</label><strong id="mean">—</strong><span>实际观测日的算术平均</span></div><div class="kpi"><label>日度波动</label><strong id="std">—</strong><span>标准差，单位为百分点</span></div><div class="kpi"><label>有效观测天数</label><strong id="count">—</strong><span id="missing">—</span></div><div class="kpi"><label>区间最高入住率</label><strong id="peak">—</strong><span id="peakDate">—</span></div></section>
 <div class="grid">
-<section class="panel"><h2>日度入住率与28日移动平均</h2><p id="trendNote">移动平均基于真实观测；使用横向缩放查看细节。</p><div id="trend" class="chart"></div></section>
-<section class="panel"><h2>区县平均入住率</h2><p>与日期筛选联动；点击区县柱条可切换分析范围。</p><div id="ranking" class="chart"></div></section>
-<section class="panel"><h2>月度入住水平</h2><p>首末月可能是不完整月份，数值按所选日期计算。</p><div id="monthly" class="chart short"></div></section>
-<section class="panel"><h2>周内入住节奏</h2><p>按星期聚合，不等同于法定工作日与节假日。</p><div id="weekday" class="chart short"></div></section>
-<section class="panel"><h2>区县水平与波动</h2><p>坐标随日期更新；颜色沿用2024—2025年固定聚类。点击圆点选择区县。</p><div id="scatter" class="chart short"></div></section>
-<section class="panel"><h2>样本截止日之后28日预测</h2><p>固定预测原点2025-12-31，阴影为95%预测区间；不随历史筛选重估。</p><div id="forecast" class="chart short"></div></section>
+<section class="panel"><h2>日度入住率与移动平均</h2><div id="trend" class="chart"></div></section>
+<section class="panel"><h2>区县平均入住率</h2><div id="ranking" class="chart"></div></section>
+<section class="panel"><h2>月度入住水平</h2><div id="monthly" class="chart short"></div></section>
+<section class="panel"><h2>周内入住节奏</h2><div id="weekday" class="chart short"></div></section>
+<section class="panel"><h2>区县水平与波动</h2><div id="scatter" class="chart short"></div></section>
+<section class="panel"><h2>未来28日预测</h2><p>预测原点：2025-12-31</p><div id="forecast" class="chart short"></div></section>
 <section class="panel wide"><div class="table-head"><div><h2>观测明细</h2><p id="tableNote">显示筛选结果中最近45条观测，可导出全部筛选结果。</p></div><button id="csv">导出筛选数据 CSV</button></div><div class="table-wrap"><table><thead><tr><th>日期</th><th>范围</th><th>入住率（%）</th><th>指标口径</th></tr></thead><tbody id="rows"></tbody></table></div></section>
-</div><p class="notice">口径说明：全市曲线直接采用平台的全市序列，区县图使用各区县日度均值，不用区县均值反推全市入住率。缺失日不计入历史均值。预测仅用于课程案例，未计入未来节假日、会展和新增供给。</p>
-<footer>曹俊男 · 数据科学学院 大数据241 · 个人课程研究　|　Pyecharts生成，ECharts离线交互　|　<a href="https://data.wgly.hangzhou.gov.cn/home/ToS.pdf">数据使用遵循来源平台服务条款</a>，数据不得有偿售卖。本站为个人课程分析成果。</footer>
+</div><footer>曹俊男 · 大数据241</footer>
 </main><script>
 const DATA=__DATA__,OPTIONS=__OPTIONS__,C=['#287d8e','#79b9bb','#f1b09a','#8ca9ce'];
 const $=id=>document.getElementById(id),areas=[...new Set(DATA.district.map(r=>r[1]))].sort();
